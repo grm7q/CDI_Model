@@ -1,0 +1,11 @@
+Flask
+Flask-RESTful
+gunicorn
+itsdangerous
+Jinja2
+peewee
+Werkzeug
+numpy
+tensorflow
+keras
+pandas

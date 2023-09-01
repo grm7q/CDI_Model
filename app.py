@@ -3,9 +3,7 @@ import tensorflow as tf
 from tensorflow import keras
 from keras.models import load_model
 import pandas as pd
-import seaborn as sns
-import joblib
-from flask import Flask, jsonify, request, render_template #for modifying html template with python output
+from flask import Flask, request, render_template #for modifying html template with python output
 
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)

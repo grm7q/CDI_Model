@@ -1,11 +1,7 @@
-Flask
-Flask-RESTful
-gunicorn
-itsdangerous
-Jinja2
-peewee
-Werkzeug
 numpy
+pandas
+Flask
+gunicorn
+Jinja2
 tensorflow
 keras
-pandas

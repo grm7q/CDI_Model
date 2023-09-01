@@ -54,7 +54,7 @@ def all_prediction_results(predictions):
     data['Predicted/Expected'][7] = ''
     data = data.style.apply(lambda s: highlight_row(s, 8)).apply(lambda s: highlight_row(s, 9)).hide(axis='index').set_table_styles([{'selector':'th',
                             'props':[('word-wrap', ' break-word'),
-                                     ('max-width','130px'),
+                                     ('max-width','135px'),
                                      ( 'text-align', 'left')
                                     ]
                            }])

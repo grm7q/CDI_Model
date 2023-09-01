@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CDI Outcome Model</title>
+</head>
+<body>
+    <form method=post enctype=multipart/form-data>
+        Age:  <input type="number" name="age"  min="0" max="150"><br>
+        CDI Recurrence Number (0=initial occurrence): <input type="number" name="recurrence_number" min="0" max="100"><br>
+        Pressors (yes=1 no=0):  <input type="number" name="pressors" min="0" max="1"><br>
+        Hypotension (SBP < 90) (yes=1 no=0):  <input type="number" name="hypotension" min="0" max="1"><br>
+        Previous Hospital Duration (0 if unavailable): <input type="number" name="previous_hospital_duration"  min="0" max="1000"><br>
+        WBC > 15 (0 if unavailable):  <input type="number" name="wbc_greater_15" min="0" max="1"><br>
+        Creatinine > 1.5 (0 if unavailable):  <input type="number" name="creatinine_greater_1_5" min="0" max="1"><br>
+        Lactate > 1.9 (0 if unavailable): <input type="number" name="lactate_greater_1_9" min="0" max="1"><br>
+        Fever (Tmax > 100.4) (0 if unavailable):  <input type="number" name="fever" min="0" max="1"><br>
+        PCR Cycle Threshold:  <input type="number" name="pcr_ct" min="0" max="37" step="any"><br>
+        Antibiotic Days (within prior 60d): <input type="number" name="antibiotic_days" min="0" max="60"><br>
+        Community-Onset (Dx on hospital days 0-2 and no recent hospitalization (3mo.)):  <input type="number" name="community_onset" min="0" max="1"><br>
+        Community-Onset Healthcare-Associated (Dx on hospital days 0-2 plus recent hospitalization (3mo.)):  <input type="number" name="community_onset_healthcare_associated" min="0" max="1"><br>
+        Hospital-Onset (Dx on hospital day 3 or greater):  <input type="number" name="hospital_onset" min="0" max="1"><br>
+        Vancomycin Monotherapy: <input type="number" name="vancomycin_monotherapy" min="0" max="1"><br>
+        Fidaxomicin Monotherapy: <input type="number" name="fidaxomicin_monotherapy" min="0" max="1"><br>
+        Metronidazole Monotherapy: <input type="number" name="metronidazole_monotherapy" min="0" max="1"><br>
+        Dual Therapy (e.g., vancomycin plus metronidazole): <input type="number" name="dual_therapy" min="0" max="1"><br>
+        <input type=submit value=Submit>
+</form>
+    CDI Outcome Predictions: {{pred | safe}}
+
+</html>

@@ -39,15 +39,15 @@ expected_all_recurrence = (expected_probabilities[5]+expected_probabilities[6])
 
 def all_prediction_results(predictions):
     data = []
-    [data.append({'CDI-Attributable Outcome': class_names[i], 'Probability (%)':round(predictions[0][i]*100,3), 'Expected (based on historical UVA cases)':round(expected_probabilities[i],3)}) for i in range(7)]
+    [data.append({'CDI-Attributable Outcome': class_names[i], 'Predicted Probability (%)':round(predictions[0][i]*100,3), 'Expected (based on historical UVA cases)':round(expected_probabilities[i],3)}) for i in range(7)]
     #adding a blank row..
-    data.append({'CDI-Attributable Outcome': '', 'Probability (%)':0})   
-    data.append({'CDI-Attributable Outcome': 'Any Recurrent Infection', 'Probability (%)':(data[5]['Probability (%)']+data[6]['Probability (%)']), 'Expected (based on historical UVA cases)':expected_all_recurrence})
-    data.append({'CDI-Attributable Outcome': 'Any CDI-Attributable Severe Outcome (ICU, Surgery, Death)', 'Probability (%)':(data[1]['Probability (%)']+data[2]['Probability (%)']+data[3]['Probability (%)']+data[4]['Probability (%)']+data[6]['Probability (%)']), 'Expected (based on historical UVA cases)':expected_all_severe_outcomes})
+    data.append({'CDI-Attributable Outcome': '', 'Predicted Probability (%)':0})   
+    data.append({'CDI-Attributable Outcome': 'Any Recurrent Infection', 'Predicted Probability (%)':(data[5]['Predicted Probability (%)']+data[6]['Predicted Probability (%)']), 'Expected (based on historical UVA cases)':expected_all_recurrence})
+    data.append({'CDI-Attributable Outcome': 'Any CDI-Attributable Severe Outcome (ICU, Surgery, Death)', 'Predicted Probability (%)':(data[1]['Predicted Probability (%)']+data[2]['Predicted Probability (%)']+data[3]['Predicted Probability (%)']+data[4]['Predicted Probability (%)']+data[6]['Predicted Probability (%)']), 'Expected (based on historical UVA cases)':expected_all_severe_outcomes})
     data = pd.DataFrame(data).reset_index(drop=True)
-    data['Predicted/Expected'] = data['Probability (%)'] /data['Expected (based on historical UVA cases)'] 
-    data['Probability (%)'] = data['Probability (%)'].astype('float64', errors='ignore').round(3).astype(str)
-    data['Probability (%)'][7] = ''
+    data['Predicted/Expected'] = data['Predicted Probability (%)'] /data['Expected (based on historical UVA cases)'] 
+    data['Predicted Probability (%)'] = data['Predicted Probability (%)'].astype('float64', errors='ignore').round(3).astype(str)
+    data['Predicted Probability (%)'][7] = ''
     data['Expected (based on historical UVA cases)'] = data['Expected (based on historical UVA cases)'].astype('float64', errors='ignore').round(2).astype(str)
     data['Expected (based on historical UVA cases)'][7] = ''
     data['Predicted/Expected'] = data['Predicted/Expected'].astype('float64', errors='ignore').round(3).astype(str).apply(lambda x: "{}{}".format(x, 'x'))
@@ -59,6 +59,7 @@ def all_prediction_results(predictions):
                                     ]
                            }])
     return data
+
     
 app = Flask(__name__)
 

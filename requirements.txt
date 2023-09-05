@@ -7,3 +7,4 @@ tensorflow-cpu
 keras
 shap
 joblib
+matplotlib

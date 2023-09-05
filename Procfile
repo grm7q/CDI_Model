@@ -1,1 +1,1 @@
-web: gunicorn app:app --log-file=- --optimize_for_size --max_old_space_size=460 server.js
+web: gunicorn project.auth:app --timeout 900 --max-requests 1200 --workers 2

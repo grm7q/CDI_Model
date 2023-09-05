@@ -4,6 +4,8 @@ from tensorflow import keras
 from keras.models import load_model
 import pandas as pd
 from flask import Flask, request, render_template #for modifying html template with python output
+import shap
+import joblib as jbl #saving/loading shap explainer
 
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
@@ -23,17 +25,12 @@ class_names = ["Survival; adequate clinical response; no severe adverse events, 
                "No severe outcomes of index infection but subsequent recurrent CDI",
               "Severe adverse outcome plus recurrent infection"]
 
-# def all_prediction_results(predictions):
-#     data = []
-#     [data.append({'Outcome': class_names[i], 'Probability':round(predictions[0][i],4)}) for i in range(7)]
-#     return pd.DataFrame(data).reset_index(drop=True)
-
 #pandas styling function
 def highlight_row(s, row_index, color='bold', background_color = 'yellow'):
     return ['font-weight: %s; background-color: %s' % (color, background_color) if i==row_index else '' for i in range(len(s))]
 
-expected_probabilities = [1162/1660, 29/1660, 10/1660, 4/1660, 88/1660, 345/1660, 22/1660]
-expected_probabilities = [ round(i*100, 2) for i in expected_probabilities ]
+expected_probabilities_raw = [1162/1660, 29/1660, 10/1660, 4/1660, 88/1660, 345/1660, 22/1660]
+expected_probabilities = [ round(i*100, 2) for i in expected_probabilities_raw ]
 expected_all_severe_outcomes = (expected_probabilities[1]+expected_probabilities[2]+expected_probabilities[3]+expected_probabilities[4]+expected_probabilities[6])
 expected_all_recurrence = (expected_probabilities[5]+expected_probabilities[6])
 
@@ -60,7 +57,7 @@ def all_prediction_results(predictions):
                            }])
     return data
 
-    
+
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
@@ -138,13 +135,39 @@ def index():
             dual_therapy_value = 1
         else:
             print("No onset selection found.")
-
-        pred = model.predict(np.array([[int(age), int(recurrence_number), int(pressors),int(hypotension), int(previous_hospital_duration), int(wbc_greater_15),int(creatinine_greater_1_5), int(lactate_greater_1_9), 
+        
+        input = pd.DataFrame(np.array([[int(age), int(recurrence_number), int(pressors),int(hypotension), int(previous_hospital_duration), int(wbc_greater_15),int(creatinine_greater_1_5), int(lactate_greater_1_9), 
                                         int(fever),np.float64(pcr_ct), int(antibiotic_days), int(community_onset_value),int(community_onset_healthcare_associated_value), int(hospital_onset_value), int(vancomycin_monotherapy_value),  int(fidaxomicin_monotherapy_value), int(metronidazole_monotherapy_value), 
                                         int(dual_therapy_value)],]))
-        return render_template('index7.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left")) 
+        pred = model.predict(input)
+        
+        #SHAP forceplots
+        feature_names = ['Age', 'Recurrence #', 'Pressors', 'Hypotension', 'Prior Hosp. Duration', 'WBC', 'Creatinine', 
+                'Lactate', 'Fever', 'PCR CT', 'Abx Days', 'Community-Onset', 'Hospital-Onset', 'Healthcare Associated', 'Vanco Tx', 
+                'fidaxo_tx', 'metro_tx', 'dual_tx']
+        with open('explainer_saved', 'rb') as f:
+            explainer = jbl.load(f)
+        shap_values = explainer.shap_values(input)
+        #FORCEPLOT: CDI-associated death
+        CLASS = 4 #death
+        force_plot_death = shap.force_plot(base_value = explainer.expected_value[CLASS], #expected_probabilities[CLASS], 
+                         shap_values = shap_values[CLASS], 
+                         features = input.iloc[[0]].values, 
+               feature_names=feature_names)
+        #FORCEPLOT: 60-day Uncomplicated Recurrence
+        CLASS = 5 #recurrence
+
+        force_plot_recurrence = shap.force_plot(explainer.expected_value[CLASS], 
+                         shap_values[CLASS], 
+                         input.iloc[[0]].values, 
+               feature_names=feature_names)
+        
+        
+        return render_template('index8.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
+                              force_plot_recurrence=f"{shap.getjs()}{force_plot_recurrence.html()}",
+                              force_plot_death = f"{shap.getjs()}{force_plot_death.html()}") 
     
-    return render_template('index7.html')
+    return render_template('index8.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

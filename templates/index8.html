@@ -5,7 +5,7 @@
     <title>CDI Outcome Model</title>
 </head>
 <body>
-<h1><em>C. difficile</em> Outcome Model (version 1.7)</h1>
+<h1><em>C. difficile</em> Outcome Model (version 1.8)</h1>
     <form method=post enctype=multipart/form-data>
         Age:  <input type="number" name="age"  min="0" max="150"><br>
         CDI Recurrence Number (0=initial occurrence): <input type="number" name="recurrence_number" min="0" max="100"><br>
@@ -47,6 +47,19 @@
     
     <p><strong>CDI Outcome Predictions:</strong></p>    
      {{pred | safe}}
+    <p></p> 
+    <p></p> 
+    <p><strong>SHapley Additive exPlanations (SHAP)</strong></p>
+    
+    <p><strong>Force Plot: 60-day Uncomplicated Recurrent CDI Prediction</strong></p>   
+     {{force_plot_recurrence | safe}}
+    
+    <p><strong>Force Plot: CDI-associated Death</strong></p>   
+     {{force_plot_death | safe}}
+    
+    (SHapley Additive exPlanations (SHAP) values help explain how important each of this patient's inputs were in calculating (through the deep neural network) the predicted probabilities.)
+    
+    Note. Zeroes indicate 'no' (vs. 1='yes') for boolean variables. 'Base value' probabilities represent average model output over the training dataset and thus may differ slightly from expected values over the entire dataset.
 
 </html>
     

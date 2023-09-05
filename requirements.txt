@@ -5,7 +5,3 @@ gunicorn
 Jinja2
 tensorflow-cpu
 keras
-shap
-joblib
-matplotlib
-ipython

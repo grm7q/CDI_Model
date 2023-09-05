@@ -6,7 +6,6 @@ import pandas as pd
 from flask import Flask, request, render_template #for modifying html template with python output
 import shap #shap plots
 import joblib as jbl #saving/loading shap explainer
-shap.initjs()
 
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)

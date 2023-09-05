@@ -6,7 +6,6 @@ import pandas as pd
 from flask import Flask, request, render_template #for modifying html template with python output
 import shap
 import joblib as jbl #saving/loading shap explainer
-import pickle
 
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)

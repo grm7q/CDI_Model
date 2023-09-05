@@ -1,1 +1,1 @@
-web: gunicorn app.auth:app --timeout 900 --max-requests 1200 --workers 2
+web: -w 2 --optimize_for_size --max_old_space_size=460 gunicorn app:app

@@ -8,3 +8,4 @@ keras
 shap
 joblib
 matplotlib
+ipython

@@ -26,8 +26,8 @@ class_names = ["Survival; adequate clinical response; no severe adverse events, 
               "Severe adverse outcome plus recurrent infection"]
 
 #pandas styling function
-def highlight_row(s, row_index, color='bold'):
-    return ['font-weight: %s' % color if i==row_index else '' for i in range(len(s))]
+def highlight_row(s, row_index, color='bold', background_color = 'yellow'):
+    return ['font-weight: %s; background-color: %s' % (color, background_color) if i==row_index else '' for i in range(len(s))]
 
 expected_probabilities_raw = [1162/1660, 29/1660, 10/1660, 4/1660, 88/1660, 345/1660, 22/1660]
 expected_probabilities = [ round(i*100, 2) for i in expected_probabilities_raw ]
@@ -149,11 +149,11 @@ def index():
             explainer = jbl.load(f)
         shap_values = explainer.shap_values(input)
         #FORCEPLOT: CDI-associated death
-        CLASS = 4 #death
-        force_plot_death = shap.force_plot(base_value = explainer.expected_value[CLASS], #expected_probabilities[CLASS], 
-                         shap_values = shap_values[CLASS], 
-                         features = input.iloc[[0]].values, 
-               feature_names=feature_names)
+#        CLASS = 4 #death
+#        force_plot_death = shap.force_plot(base_value = explainer.expected_value[CLASS], #expected_probabilities[CLASS], 
+#                         shap_values = shap_values[CLASS], 
+#                         features = input.iloc[[0]].values, 
+#               feature_names=feature_names)
         #FORCEPLOT: 60-day Uncomplicated Recurrence
         CLASS = 5 #recurrence
 
@@ -164,8 +164,8 @@ def index():
         
         
         return render_template('index8.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
-                              force_plot_recurrence=f"{shap.getjs()}{force_plot_recurrence.html()}",
-                              force_plot_death = f"{shap.getjs()}{force_plot_death.html()}") 
+                              force_plot_recurrence=f"{shap.getjs()}{force_plot_recurrence.html()}") #,
+                              #force_plot_death = f"{shap.getjs()}{force_plot_death.html()}") 
     
     return render_template('index8.html')
 

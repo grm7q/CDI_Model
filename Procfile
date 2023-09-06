@@ -1,1 +1,1 @@
-web: gunicorn app:app --log-file=- -w 2 --max-requests 1200
+web: gunicorn app:app --log-file=- -w 2 --max-requests 1000 --max-requests-jitter 50

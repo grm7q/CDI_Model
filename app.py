@@ -144,30 +144,30 @@ def index():
         #SHAP forceplots
         feature_names = ['Age', 'Recurrence #', 'Pressors', 'Hypotension', 'Prior Hosp. Duration', 'WBC', 'Creatinine', 
                 'Lactate', 'Fever', 'PCR CT', 'Abx Days', 'Community-Onset', 'Hospital-Onset', 'Healthcare Associated', 'Vanco Tx', 
-                'fidaxo_tx', 'metro_tx', 'dual_tx']
+                'Fidaxo_tx', 'Metro_tx', 'Dual_tx']
         with open('explainer_saved', 'rb') as f:
             explainer = jbl.load(f)
         shap_values = explainer.shap_values(input)
         #FORCEPLOT: CDI-associated death
         CLASS = 4 #death
-        force_plot_death = shap.force_plot(base_value = expected_probabilities_raw[CLASS], #explainer.expected_value[CLASS],
+        force_plot_death = shap.force_plot(base_value = explainer.expected_value[CLASS], #expected_probabilities[CLASS], 
                          shap_values = shap_values[CLASS], 
                          features = input.iloc[[0]].values, 
                feature_names=feature_names)
         #FORCEPLOT: 60-day Uncomplicated Recurrence
         CLASS = 5 #recurrence
 
-        force_plot_recurrence = shap.force_plot(expected_probabilities_raw[CLASS], #explainer.expected_value[CLASS], 
+        force_plot_recurrence = shap.force_plot(explainer.expected_value[CLASS], 
                          shap_values[CLASS], 
                          input.iloc[[0]].values, 
                feature_names=feature_names)
         
         
-        return render_template('index8.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
+        return render_template('index9.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
                               force_plot_recurrence=f"{shap.getjs()}{force_plot_recurrence.html()}",
                               force_plot_death = f"{shap.getjs()}{force_plot_death.html()}") 
     
-    return render_template('index8.html')
+    return render_template('index9.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

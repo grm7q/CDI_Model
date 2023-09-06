@@ -150,14 +150,15 @@ def index():
         shap_values = explainer.shap_values(input)
         #FORCEPLOT: CDI-associated death
         CLASS = 4 #death
-        force_plot_death = shap.force_plot(base_value = explainer.expected_value[CLASS], #expected_probabilities[CLASS], 
+        force_plot_death = shap.force_plot(base_value = expected_probabilities_raw[CLASS], #explainer.expected_value[CLASS],
+##expected_probabilities[CLASS], 
                          shap_values = shap_values[CLASS], 
                          features = input.iloc[[0]].values, 
                feature_names=feature_names)
         #FORCEPLOT: 60-day Uncomplicated Recurrence
         CLASS = 5 #recurrence
 
-        force_plot_recurrence = shap.force_plot(explainer.expected_value[CLASS], 
+        force_plot_recurrence = shap.force_plot(expected_probabilities_raw[CLASS], #explainer.expected_value[CLASS],
                          shap_values[CLASS], 
                          input.iloc[[0]].values, 
                feature_names=feature_names)

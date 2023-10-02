@@ -13,6 +13,9 @@ tf.random.set_seed(RANDOM_SEED)
 np.set_printoptions(suppress=True) #suppressing scientific notation
 pd.set_option('display.max_colwidth', None) # Display the DataFrame with the long string
 
+#added to help prevent memory leaks
+keras.backend.clear_session()
+
 model = load_model('model_predict_DOOR_unscaled3_FINAL_reduced.h5', compile=False)
 model.compile()
 
@@ -174,3 +177,4 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
+

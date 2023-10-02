@@ -172,7 +172,8 @@ def index():
         return render_template('index9.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
                               force_plot_recurrence=f"{shap.getjs()}{force_plot_recurrence.html()}",
                               force_plot_death = f"{shap.getjs()}{force_plot_death.html()}") 
-    
+    	del model
+	del pred
     return render_template('index9.html')
 
 gc.collect()

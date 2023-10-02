@@ -10,7 +10,6 @@ import joblib as jbl #saving/loading shap explainer
 
 #added to help prevent memory leaks
 keras.backend.clear_session()
-tf.Variable.dispose()
 gc.collect()
 
 RANDOM_SEED = 42

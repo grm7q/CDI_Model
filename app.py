@@ -5,9 +5,11 @@ from keras.models import load_model
 import pandas as pd
 from flask import Flask, request, render_template #for modifying html template with python output
 import shap
-import gc
+import gc #to help with memory leaks
 import joblib as jbl #saving/loading shap explainer
 
+keras.backend.clear_session()
+gc.collect()
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
 tf.random.set_seed(RANDOM_SEED)

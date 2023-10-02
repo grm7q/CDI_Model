@@ -9,7 +9,7 @@ import gc #to help with memory leaks
 import joblib as jbl #saving/loading shap explainer
 
 keras.backend.clear_session()
-gc.set_threshold(5, 1, 1)
+gc.set_threshold(500, 1, 1)
 gc.collect()
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)

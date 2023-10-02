@@ -163,9 +163,8 @@ def index():
                          shap_values[CLASS], 
                          input.iloc[[0]].values, 
                feature_names=feature_names)
-
-	keras.backend.clear_session()
-	_ = gc.collect()
+        keras.backend.clear_session()
+        _ = gc.collect()
 
         return render_template('index9.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
                               force_plot_recurrence=f"{shap.getjs()}{force_plot_recurrence.html()}",

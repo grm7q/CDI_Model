@@ -3,7 +3,7 @@ pandas
 Flask
 gunicorn
 Jinja2
-tensorflow-cpu==2.9.0
+tensorflow-cpu==2.5.0
 keras
 shap
 joblib

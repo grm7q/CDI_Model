@@ -5,6 +5,7 @@ from keras.models import load_model
 import pandas as pd
 from flask import Flask, request, render_template #for modifying html template with python output
 import shap
+import gc
 import joblib as jbl #saving/loading shap explainer
 
 RANDOM_SEED = 42
@@ -162,15 +163,18 @@ def index():
                          shap_values[CLASS], 
                          input.iloc[[0]].values, 
                feature_names=feature_names)
-        
-        #added to help prevent memory leaks
-        keras.backend.clear_session()
+
+	#added to help prevent memory leaks
+	keras.backend.clear_session()
+	gc.collect()
 
         return render_template('index9.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
                               force_plot_recurrence=f"{shap.getjs()}{force_plot_recurrence.html()}",
                               force_plot_death = f"{shap.getjs()}{force_plot_death.html()}") 
     
     return render_template('index9.html')
+
+gc.collect()
 
 if __name__ == '__main__':
     app.run(debug=True)

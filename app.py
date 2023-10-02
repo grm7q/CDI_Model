@@ -5,10 +5,13 @@ from keras.models import load_model
 import pandas as pd
 from flask import Flask, request, render_template #for modifying html template with python output
 import shap
-import gc
 import joblib as jbl #saving/loading shap explainer
+import gc
 
+#added to help prevent memory leaks
+keras.backend.clear_session()
 gc.collect()
+
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
 tf.random.set_seed(RANDOM_SEED)
@@ -141,7 +144,7 @@ def index():
         input = pd.DataFrame(np.array([[int(age), int(recurrence_number), int(pressors),int(hypotension), int(previous_hospital_duration), int(wbc_greater_15),int(creatinine_greater_1_5), int(lactate_greater_1_9), 
                                         int(fever),np.float64(pcr_ct), int(antibiotic_days), int(community_onset_value),int(community_onset_healthcare_associated_value), int(hospital_onset_value), int(vancomycin_monotherapy_value),  int(fidaxomicin_monotherapy_value), int(metronidazole_monotherapy_value), 
                                         int(dual_therapy_value)],]))
-        pred = model(input).numpy()
+        pred = model(input).numpy() #model.predict(input)
         
         #SHAP forceplots
         feature_names = ['Age', 'Recurrence #', 'Pressors', 'Hypotension', 'Prior Hosp. Duration', 'WBC', 'Creatinine', 
@@ -164,17 +167,17 @@ def index():
                          shap_values[CLASS], 
                          input.iloc[[0]].values, 
                feature_names=feature_names)
-
-	#added to help prevent memory leaks
-	keras.backend.clear_session()
-	gc.collect()
-
+        
+        
         return render_template('index9.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
                               force_plot_recurrence=f"{shap.getjs()}{force_plot_recurrence.html()}",
                               force_plot_death = f"{shap.getjs()}{force_plot_death.html()}") 
-    	
+    
     return render_template('index9.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+
 

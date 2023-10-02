@@ -9,7 +9,6 @@ import gc #to help with memory leaks
 import joblib as jbl #saving/loading shap explainer
 
 keras.backend.clear_session()
-gc.set_threshold(500, 1, 1)
 gc.collect()
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
@@ -166,7 +165,7 @@ def index():
                          shap_values[CLASS], 
                          input.iloc[[0]].values, 
                feature_names=feature_names)
-
+        gc.collect()
         return render_template('index9.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
                               force_plot_recurrence=f"{shap.getjs()}{force_plot_recurrence.html()}",
                               force_plot_death = f"{shap.getjs()}{force_plot_death.html()}") 
@@ -174,7 +173,7 @@ def index():
     return render_template('index9.html')
     
     keras.backend.clear_session()
-    _ = gc.collect()
+    gc.collect()
 
 if __name__ == '__main__':
     app.run(debug=True)

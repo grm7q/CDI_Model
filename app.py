@@ -14,7 +14,7 @@ np.set_printoptions(suppress=True) #suppressing scientific notation
 pd.set_option('display.max_colwidth', None) # Display the DataFrame with the long string
 
 model = load_model('model_predict_DOOR_unscaled3_FINAL_reduced.h5', compile=False)
-model.compile()
+#model.compile()
 
 #specifying class names for Y_combined
 class_names = ["Survival; adequate clinical response; no severe adverse events, and no recurrent CDI", 

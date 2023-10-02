@@ -8,6 +8,7 @@ import shap
 import gc
 import joblib as jbl #saving/loading shap explainer
 
+gc.collect()
 RANDOM_SEED = 42
 np.random.seed(RANDOM_SEED)
 tf.random.set_seed(RANDOM_SEED)

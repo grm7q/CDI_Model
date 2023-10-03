@@ -177,6 +177,8 @@ def index():
         del shap_values
         del CLASS
         del force_plot_death
+        del force_plot_recurrence
+        del data
         gc.collect()
         
     return render_template('index9.html')

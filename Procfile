@@ -1,1 +1,1 @@
-web: gunicorn app:app --log-file=- -w 1 --max-requests 1000 --max-requests-jitter 50 --graceful-timeout 1 --timeout 10 
+web: gunicorn app:app --log-file=- -w 1

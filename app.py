@@ -197,27 +197,25 @@ def index():
         #print('<img src="data:image/png;base64,{}">'.format(bytes_image_recurrence))
 
         
-        #added to help prevent memory leaks
-        keras.backend.clear_session()
-        _ = gc.collect()
-        
-        return render_template('index10.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
+        return render_template('index11.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
                               #force_plot_recurrence = os.path.join( '/static/force_plot_recurrence.jpg'),
                                bytes_image_recurrence = bytes_image_recurrence,
                                bytes_image_death = bytes_image_death)
                               #force_plot_death = os.path.join( '/static/force_plot_death.jpg'))
                               #force_plot_death = f"{Image.open('force_plot_death.png').show().html()}")
     
+        #added to help prevent memory leaks    
         del inputs
         del pred
         del feature_names
         del shap_values
         del CLASS
-        del data
-        #os.remove(my_path + '/static/force_plot_death.jpg')
-        #os.remove(my_path + '/static/force_plot_recurrence.jpg')
+        del bytes_image_recurrence
+        del bytes_image_death
+        keras.backend.clear_session()
+        _ = gc.collect()
         
-    return render_template('index10.html')
+    return render_template('index11.html')
 
 
 if __name__ == '__main__':

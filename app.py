@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 import os
 import io
 import base64 
-import time
 
 keras.backend.clear_session()
 gc.collect()
@@ -219,8 +218,7 @@ def index():
         del bytes_image_recurrence
         del bytes_image_death
         keras.backend.clear_session()
-        _ = gc.collect()
-        time.sleep(5)
+        gc.collect()
         
     return render_template('index11.html')
 

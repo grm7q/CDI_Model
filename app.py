@@ -177,10 +177,12 @@ def index():
         del shap_values
         del CLASS
         del force_plot_death
+        gc.collect()
         
     return render_template('index9.html')
     
     keras.backend.clear_session()
+    gc.collect()
 
 if __name__ == '__main__':
     app.run() #debug=True

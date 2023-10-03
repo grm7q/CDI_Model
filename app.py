@@ -219,6 +219,7 @@ def index():
         del bytes_image_death
         keras.backend.clear_session()
         gc.collect()
+        raise SystemExit
         
     return render_template('index11.html')
 

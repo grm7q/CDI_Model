@@ -10,6 +10,8 @@ import joblib as jbl #saving/loading shap explainer
 from PIL import Image
 import matplotlib.pyplot as plt
 import os
+import io
+import base64 
 
 keras.backend.clear_session()
 gc.collect()
@@ -156,32 +158,55 @@ def index():
                 'Fidaxo_tx', 'Metro_tx', 'Dual_tx']
         
         shap_values = explainer.shap_values(inputs)
+        
         #FORCEPLOT: CDI-associated death
         CLASS = 4 #death
+
         shap.force_plot(base_value = explainer.expected_value[CLASS], #expected_probabilities[CLASS], 
                          shap_values = shap_values[CLASS], 
                          features = inputs.iloc[[0]].values, 
                feature_names=feature_names, show=False, matplotlib=True)
-        plt.savefig(my_path + '/static/force_plot_death.jpg', dpi=600, bbox_inches='tight')
+        
+        
+        bytes_image_death = io.BytesIO()
+        plt.savefig(bytes_image_death, format='png', dpi=600, bbox_inches='tight')
+        bytes_image_death.seek(0)
+        bytes_image_death = bytes_image_death.getvalue()         # get data from file (BytesIO)
+        bytes_image_death = base64.b64encode(bytes_image_death) # convert to base64 as bytes
+        bytes_image_death = bytes_image_death.decode()          # convert bytes to string
+
+        #plt.savefig(my_path + '/static/force_plot_death.jpg', dpi=600, bbox_inches='tight')
         plt.close()
         
 
         #FORCEPLOT: 60-day Uncomplicated Recurrence
         CLASS = 5 #recurrence
+        
         shap.force_plot(base_value = explainer.expected_value[CLASS], #expected_probabilities[CLASS], 
                          shap_values = shap_values[CLASS], 
                          features = inputs.iloc[[0]].values, 
                feature_names=feature_names, show=False, matplotlib=True)
-        plt.savefig(my_path + '/static/force_plot_recurrence.jpg', dpi=600, bbox_inches='tight')
-        plt.close()
+    
+        bytes_image_recurrence = io.BytesIO()
+        plt.savefig(bytes_image_recurrence, format='png', dpi=600, bbox_inches='tight')
+        bytes_image_recurrence.seek(0)
+        bytes_image_recurrence = bytes_image_recurrence.getvalue()         # get data from file (BytesIO)
+        bytes_image_recurrence = base64.b64encode(bytes_image_recurrence) # convert to base64 as bytes
+        bytes_image_recurrence = bytes_image_recurrence.decode()          # convert bytes to string
+
+        #print('<img src="data:image/png;base64,{}">'.format(bytes_image_recurrence))
+
         
         #added to help prevent memory leaks
         keras.backend.clear_session()
         _ = gc.collect()
         
         return render_template('index10.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
-                              force_plot_recurrence = os.path.join( '/static/force_plot_recurrence.jpg'),
-                              force_plot_death = os.path.join( '/static/force_plot_death.jpg'))
+                              #force_plot_recurrence = os.path.join( '/static/force_plot_recurrence.jpg'),
+                               bytes_image_recurrence = bytes_image_recurrence,
+                               bytes_image_death = bytes_image_death)
+                              #force_plot_death = os.path.join( '/static/force_plot_death.jpg'))
+                              #force_plot_death = f"{Image.open('force_plot_death.png').show().html()}")
     
         del inputs
         del pred
@@ -189,8 +214,8 @@ def index():
         del shap_values
         del CLASS
         del data
-        os.remove(my_path + '/static/force_plot_death.jpg')
-        os.remove(my_path + '/static/force_plot_recurrence.jpg')
+        #os.remove(my_path + '/static/force_plot_death.jpg')
+        #os.remove(my_path + '/static/force_plot_recurrence.jpg')
         
     return render_template('index10.html')
 

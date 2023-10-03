@@ -1,0 +1,13 @@
+/test
+/spec
+/docs
+spec
+package.json
+doc
+/tmp/cache
+/node_modules
+/.cache/yarn
+.m2
+*.psd
+*.pdf
+/tests/

@@ -1,7 +1,7 @@
 Flask
 pandas
 numpy
-gunicorn
+gunicorn==0.17.2
 Jinja2
 tensorflow-cpu==2.9.0
 keras

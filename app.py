@@ -21,6 +21,11 @@ tf.random.set_seed(RANDOM_SEED)
 np.set_printoptions(suppress=True) #suppressing scientific notation
 pd.set_option('display.max_colwidth', None) # Display the DataFrame with the long string
 
+#By default, TensorFlow uses all available resources, whether it’s CPUs or GPUs. 
+#To restrict TensorFlow to use only one CPU, we need to set the environment variable 
+#CUDA_VISIBLE_DEVICES to an empty value. Here’s how you do it:
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 model = load_model('model_predict_DOOR_unscaled3_FINAL_reduced.h5', compile=False)
 #model.compile()
 
@@ -169,7 +174,7 @@ def index():
         
         
         bytes_image_death = io.BytesIO()
-        plt.savefig(bytes_image_death, format='png', dpi=150, bbox_inches='tight')
+        plt.savefig(bytes_image_death, format='png', dpi=125, bbox_inches='tight')
         bytes_image_death.seek(0)
         bytes_image_death = bytes_image_death.getvalue()         # get data from file (BytesIO)
         bytes_image_death = base64.b64encode(bytes_image_death) # convert to base64 as bytes
@@ -188,7 +193,7 @@ def index():
                feature_names=feature_names, show=False, matplotlib=True)
     
         bytes_image_recurrence = io.BytesIO()
-        plt.savefig(bytes_image_recurrence, format='png', dpi=150, bbox_inches='tight')
+        plt.savefig(bytes_image_recurrence, format='png', dpi=125, bbox_inches='tight')
         bytes_image_recurrence.seek(0)
         bytes_image_recurrence = bytes_image_recurrence.getvalue()         # get data from file (BytesIO)
         bytes_image_recurrence = base64.b64encode(bytes_image_recurrence) # convert to base64 as bytes

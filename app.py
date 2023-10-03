@@ -139,10 +139,10 @@ def index():
         else:
             print("No onset selection found.")
         
-        input = pd.DataFrame(np.array([[int(age), int(recurrence_number), int(pressors),int(hypotension), int(previous_hospital_duration), int(wbc_greater_15),int(creatinine_greater_1_5), int(lactate_greater_1_9), 
+        inputs = pd.DataFrame(np.array([[int(age), int(recurrence_number), int(pressors),int(hypotension), int(previous_hospital_duration), int(wbc_greater_15),int(creatinine_greater_1_5), int(lactate_greater_1_9), 
                                         int(fever),np.float64(pcr_ct), int(antibiotic_days), int(community_onset_value),int(community_onset_healthcare_associated_value), int(hospital_onset_value), int(vancomycin_monotherapy_value),  int(fidaxomicin_monotherapy_value), int(metronidazole_monotherapy_value), 
                                         int(dual_therapy_value)],]))
-        pred = model(input).numpy() #model.predict(input)
+        pred = model(inputs).numpy() #model.predict(inputs)
         
         #SHAP forceplots
         feature_names = ['Age', 'Recurrence #', 'Pressors', 'Hypotension', 'Prior Hosp. Duration', 'WBC', 'Creatinine', 
@@ -150,28 +150,35 @@ def index():
                 'Fidaxo_tx', 'Metro_tx', 'Dual_tx']
         with open('explainer_saved', 'rb') as f:
             explainer = jbl.load(f)
-        shap_values = explainer.shap_values(input)
+        shap_values = explainer.shap_values(inputs)
         #FORCEPLOT: CDI-associated death
         CLASS = 4 #death
         force_plot_death = shap.force_plot(base_value = explainer.expected_value[CLASS], #expected_probabilities_raw[CLASS], 
 ##expected_probabilities[CLASS], 
                          shap_values = shap_values[CLASS], 
-                         features = input.iloc[[0]].values, 
+                         features = inputs.iloc[[0]].values, 
                feature_names=feature_names)
         #FORCEPLOT: 60-day Uncomplicated Recurrence
         CLASS = 5 #recurrence
 
         force_plot_recurrence = shap.force_plot(explainer.expected_value[CLASS], #expected_probabilities_raw[CLASS], 
                          shap_values[CLASS], 
-                         input.iloc[[0]].values, 
+                         inputs.iloc[[0]].values, 
                feature_names=feature_names)
         return render_template('index9.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
                               force_plot_recurrence=f"{shap.getjs()}{force_plot_recurrence.html()}",
                               force_plot_death = f"{shap.getjs()}{force_plot_death.html()}") 
     
+        del inputs
+        del pred
+        del feature_names
+        del shap_values
+        del CLASS
+        del force_plot_death
+        
     return render_template('index9.html')
     
     keras.backend.clear_session()
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run() #debug=True

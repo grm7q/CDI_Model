@@ -19,6 +19,9 @@ pd.set_option('display.max_colwidth', None) # Display the DataFrame with the lon
 model = load_model('model_predict_DOOR_unscaled3_FINAL_reduced.h5', compile=False)
 #model.compile()
 
+with open('explainer_saved', 'rb') as f:
+    explainer = jbl.load(f)
+    
 #specifying class names for Y_combined
 class_names = ["Survival; adequate clinical response; no severe adverse events, and no recurrent CDI", 
                "Survival; adequate clinical response; ICU transfer due to sepsis without need for pressors or surgery", 
@@ -148,8 +151,7 @@ def index():
         feature_names = ['Age', 'Recurrence #', 'Pressors', 'Hypotension', 'Prior Hosp. Duration', 'WBC', 'Creatinine', 
                 'Lactate', 'Fever', 'PCR CT', 'Abx Days', 'Community-Onset', 'Hospital-Onset', 'Healthcare Associated', 'Vanco Tx', 
                 'Fidaxo_tx', 'Metro_tx', 'Dual_tx']
-        with open('explainer_saved', 'rb') as f:
-            explainer = jbl.load(f)
+        
         shap_values = explainer.shap_values(inputs)
         #FORCEPLOT: CDI-associated death
         CLASS = 4 #death

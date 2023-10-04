@@ -8,7 +8,6 @@ from flask import Flask, request, render_template #for modifying html template w
 import shap
 import gc
 import joblib as jbl #saving/loading shap explainer
-from PIL import Image
 import matplotlib.pyplot as plt
 import os
 import io
@@ -85,7 +84,7 @@ app = Flask(__name__)
 
 def index():
     if request.method == 'POST':
-        my_path = os.getcwd() # Figures out the absolute path 
+        #my_path = os.getcwd() # Figures out the absolute path 
 #gathering continuous inputs...
         age = request.form['age']
         recurrence_number = request.form['recurrence_number']

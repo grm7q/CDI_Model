@@ -155,17 +155,13 @@ def index():
                                         int(fever),np.float64(pcr_ct), int(antibiotic_days), int(community_onset_value),int(community_onset_healthcare_associated_value), int(hospital_onset_value), int(vancomycin_monotherapy_value),  int(fidaxomicin_monotherapy_value), int(metronidazole_monotherapy_value), 
                                         int(dual_therapy_value)],]))
         pred = model.predict_on_batch(inputs) # model(inputs).numpy() model.predict(inputs) 
-        keras.backend.clear_session()
-        gc.collect()
         
         #SHAP forceplots
         feature_names = ['Age', 'Recurrence #', 'Pressors', 'Hypotension', 'Prior Hosp. Duration', 'WBC', 'Creatinine', 
                 'Lactate', 'Fever', 'PCR CT', 'Abx Days', 'Community-Onset', 'Hospital-Onset', 'Healthcare Associated', 'Vanco Tx', 
                 'Fidaxo_tx', 'Metro_tx', 'Dual_tx']
         
-        shap_values = explainer.shap_values(inputs)
-        keras.backend.clear_session()
-        gc.collect()
+        shap_values = explainer.shap_values(inputs, nsamples=100)
         
         #FORCEPLOT: CDI-associated death
         CLASS = 4 #death

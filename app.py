@@ -155,7 +155,7 @@ def index():
         inputs = pd.DataFrame(np.array([[int(age), int(recurrence_number), int(pressors),int(hypotension), int(previous_hospital_duration), int(wbc_greater_15),int(creatinine_greater_1_5), int(lactate_greater_1_9), 
                                         int(fever),np.float64(pcr_ct), int(antibiotic_days), int(community_onset_value),int(community_onset_healthcare_associated_value), int(hospital_onset_value), int(vancomycin_monotherapy_value),  int(fidaxomicin_monotherapy_value), int(metronidazole_monotherapy_value), 
                                         int(dual_therapy_value)],]))
-        pred = model(inputs).numpy() #model.predict(inputs)
+        pred = model.predict_on_batch(inputs) # model(inputs).numpy() model.predict(inputs) 
         
         #SHAP forceplots
         feature_names = ['Age', 'Recurrence #', 'Pressors', 'Hypotension', 'Prior Hosp. Duration', 'WBC', 'Creatinine', 
@@ -219,7 +219,6 @@ def index():
         del bytes_image_death
         keras.backend.clear_session()
         gc.collect()
-        break
         
     return render_template('index11.html')
 

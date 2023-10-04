@@ -173,7 +173,7 @@ def index():
         
         
         bytes_image_death = io.BytesIO()
-        plt.savefig(bytes_image_death, format='png', dpi=125, bbox_inches='tight')
+        plt.savefig(bytes_image_death, format='png', dpi=300, bbox_inches='tight')
         bytes_image_death.seek(0)
         bytes_image_death = bytes_image_death.getvalue()         # get data from file (BytesIO)
         bytes_image_death = base64.b64encode(bytes_image_death) # convert to base64 as bytes
@@ -192,7 +192,7 @@ def index():
                feature_names=feature_names, show=False, matplotlib=True)
     
         bytes_image_recurrence = io.BytesIO()
-        plt.savefig(bytes_image_recurrence, format='png', dpi=125, bbox_inches='tight')
+        plt.savefig(bytes_image_recurrence, format='png', dpi=300, bbox_inches='tight')
         bytes_image_recurrence.seek(0)
         bytes_image_recurrence = bytes_image_recurrence.getvalue()         # get data from file (BytesIO)
         bytes_image_recurrence = base64.b64encode(bytes_image_recurrence) # convert to base64 as bytes

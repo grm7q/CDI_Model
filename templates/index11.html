@@ -5,7 +5,7 @@
     <title>CDI Outcome Model</title>
 </head>
 <body>
-<h1><em>C. difficile</em> Outcome Model (version 1.10)</h1>
+<h1><em>C. difficile</em> Outcome Model (version 1.11)</h1>
     <form method=post enctype=multipart/form-data>
         Age:  <input type="number" name="age"  min="0" max="150"><br>
         CDI Recurrence Number (0=initial occurrence): <input type="number" name="recurrence_number" min="0" max="100"><br>
@@ -62,7 +62,7 @@
 
     <p><em>(SHapley Additive exPlanations (SHAP) values help explain how important each of this patient's inputs were in calculating (through the deep neural network) the predicted probabilities.)
     
-    Note. For boolean variables, zeroes indicate 'no' (vs. 1='yes'). 'Base value' probabilities represent average model output over the training dataset and thus may differ slightly from expected values over the entire dataset.</em></p>
+    Note. For boolean variables, zeroes indicate 'no' (vs. 1='yes'). Force plot 'base values' represent average model outputs from a sample of 500 cases from the training set that were used to calculate SHAP values and thus may differ slightly from expected values calculated over the entire (1,660 case) dataset, as shown in the table.</em></p>
 <p></p>     
 1. Lundberg et al. “A unified approach to interpreting model predictions.” Advances in Neural Information Processing Systems (2017).
 

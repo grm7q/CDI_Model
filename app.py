@@ -2,7 +2,6 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from keras.models import load_model
-from keras.backend import set_session
 import pandas as pd
 from flask import Flask, request, render_template #for modifying html template with python output
 import shap
@@ -28,11 +27,6 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 model = load_model('model_predict_DOOR_unscaled3_FINAL_reduced.h5', compile=False)
 #model.compile()
-
-GPU_OPTIONS = tf.compat.v1.GPUOptions(allow_growth=True, per_process_gpu_memory_fraction = 0.75)
-
-set_session(tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(
-       intra_op_parallelism_threads=1, inter_op_parallelism_threads=1, gpu_options = GPU_OPTIONS)))
 
 with open('explainer_saved', 'rb') as f:
     explainer = jbl.load(f)

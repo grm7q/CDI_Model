@@ -55,7 +55,7 @@ def all_prediction_results(predictions):
     #adding a blank row..
     data.append({'CDI-Attributable Outcome': '', 'Predicted Probability (%)':0})   
     data.append({'CDI-Attributable Outcome': 'Any Recurrent Infection', 'Predicted Probability (%)':(data[5]['Predicted Probability (%)']+data[6]['Predicted Probability (%)']), 'Expected (based on historical UVA cases)':expected_all_recurrence})
-    data.append({'CDI-Attributable Outcome': 'Any CDI-Attributable Severe Outcome (ICU, Surgery, Death)', 'Predicted Probability (%)':(data[1]['Predicted Probability (%)']+data[2]['Predicted Probability (%)']+data[3]['Predicted Probability (%)']+data[4]['Predicted Probability (%)']+data[6]['Predicted Probability (%)']), 'Expected (based on historical UVA cases)':expected_all_severe_outcomes})
+    data.append({'CDI-Attributable Outcome': 'Any CDI-Attributable Severe Outcome (ICU, Shock, Surgery, Death)', 'Predicted Probability (%)':(data[1]['Predicted Probability (%)']+data[2]['Predicted Probability (%)']+data[3]['Predicted Probability (%)']+data[4]['Predicted Probability (%)']+data[6]['Predicted Probability (%)']), 'Expected (based on historical UVA cases)':expected_all_severe_outcomes})
     data = pd.DataFrame(data).reset_index(drop=True)
     data['Predicted/Expected'] = data['Predicted Probability (%)'] /data['Expected (based on historical UVA cases)'] 
     data['Predicted Probability (%)'] = data['Predicted Probability (%)'].astype('float64', errors='ignore').round(3).astype(str)
@@ -163,17 +163,19 @@ def index():
         
         shap_values = explainer.shap_values(inputs, nsamples=500)
         
-        #FORCEPLOT: CDI-associated death
-        CLASS = 4 #death
+        #FORCEPLOT: CDI-associated severe outcomes
+        #shap_values[CLASS][observation]
+        CLASS1 = 1 #ICU
+        CLASS2 = 2 #pressors
+        CLASS3 = 3 #surgery
+        CLASS4 = 4 #death
+        CLASS5 = 6 #recurrence + severe outcome besides death
 
-        shap.force_plot(base_value = explainer.expected_value[CLASS], #expected_probabilities[CLASS], 
-                         shap_values = shap_values[CLASS], 
-                         features = inputs.iloc[[0]].values, 
-               feature_names=feature_names, show=False, matplotlib=True)
-        
+        shap.force_plot(base_value = explainer.expected_value[CLASS1]+explainer.expected_value[CLASS2]+explainer.expected_value[CLASS3]+explainer.expected_value[CLASS4]+explainer.expected_value[CLASS5],
+             shap_values = shap_values[CLASS1][:,:]+shap_values[CLASS2][:,:]+shap_values[CLASS3][:,:]+shap_values[CLASS4][:,:]+shap_values[CLASS5][:,:], features = inputs.iloc[[0]].values, feature_names=feature_names, show=False, matplotlib=True)
         
         bytes_image_death = io.BytesIO()
-        plt.savefig(bytes_image_death, format='png', dpi=300, bbox_inches='tight')
+        plt.savefig(bytes_image_death, format='png', dpi=600, bbox_inches='tight')
         bytes_image_death.seek(0)
         bytes_image_death = bytes_image_death.getvalue()         # get data from file (BytesIO)
         bytes_image_death = base64.b64encode(bytes_image_death) # convert to base64 as bytes
@@ -184,15 +186,14 @@ def index():
         
 
         #FORCEPLOT: 60-day Uncomplicated Recurrence
-        CLASS = 5 #recurrence
+        CLASS1 = 5 #recurrence (uncomplicated)
+        CLASS2 = 6 #recurrence (complicated)
         
-        shap.force_plot(base_value = explainer.expected_value[CLASS], #expected_probabilities[CLASS], 
-                         shap_values = shap_values[CLASS], 
-                         features = inputs.iloc[[0]].values, 
-               feature_names=feature_names, show=False, matplotlib=True)
+        shap.force_plot(base_value = explainer.expected_value[CLASS1]+explainer.expected_value[CLASS2],
+             shap_values = shap_values[CLASS1][:,:]+shap_values[CLASS2][:,:], features = inputs.iloc[[0]].values, feature_names=feature_names, show=False, matplotlib=True)
     
         bytes_image_recurrence = io.BytesIO()
-        plt.savefig(bytes_image_recurrence, format='png', dpi=300, bbox_inches='tight')
+        plt.savefig(bytes_image_recurrence, format='png', dpi=600, bbox_inches='tight')
         bytes_image_recurrence.seek(0)
         bytes_image_recurrence = bytes_image_recurrence.getvalue()         # get data from file (BytesIO)
         bytes_image_recurrence = base64.b64encode(bytes_image_recurrence) # convert to base64 as bytes
@@ -201,7 +202,7 @@ def index():
         #print('<img src="data:image/png;base64,{}">'.format(bytes_image_recurrence))
 
         
-        return render_template('index11.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
+        return render_template('index12.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
                               #force_plot_recurrence = os.path.join( '/static/force_plot_recurrence.jpg'),
                                bytes_image_recurrence = bytes_image_recurrence,
                                bytes_image_death = bytes_image_death)
@@ -219,7 +220,7 @@ def index():
         keras.backend.clear_session()
         gc.collect()
         
-    return render_template('index11.html')
+    return render_template('index12.html')
 
 
 if __name__ == '__main__':

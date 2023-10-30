@@ -161,7 +161,7 @@ def index():
                 'Lactate', 'Fever', 'PCR CT', 'Abx Days', 'Community-Onset', 'Hospital-Onset', 'Healthcare Associated', 'Vanco Tx', 
                 'Fidaxo_tx', 'Metro_tx', 'Dual_tx']
         
-        shap_values = explainer.shap_values(inputs, nsamples=500)
+        shap_values = explainer.shap_values(inputs, nsamples=600)
         
         #FORCEPLOT: CDI-associated severe outcomes
         #shap_values[CLASS][observation]

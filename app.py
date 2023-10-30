@@ -14,7 +14,7 @@ import base64
 
 keras.backend.clear_session()
 gc.collect()
-RANDOM_SEED = 42
+RANDOM_SEED = 1
 np.random.seed(RANDOM_SEED)
 tf.random.set_seed(RANDOM_SEED)
 np.set_printoptions(suppress=True) #suppressing scientific notation

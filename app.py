@@ -14,7 +14,7 @@ import base64
 
 keras.backend.clear_session()
 gc.collect()
-RANDOM_SEED = 2
+RANDOM_SEED = 3
 np.random.seed(RANDOM_SEED)
 tf.random.set_seed(RANDOM_SEED)
 np.set_printoptions(suppress=True) #suppressing scientific notation
@@ -161,7 +161,7 @@ def index():
                 'Lactate', 'Fever', 'PCR CT', 'Abx Days', 'Community-Onset', 'Hospital-Onset', 'Healthcare Associated', 'Vanco Tx', 
                 'Fidaxo_tx', 'Metro_tx', 'Dual_tx']
         
-        shap_values = explainer.shap_values(inputs, nsamples=500)
+        shap_values = explainer.shap_values(inputs, nsamples=600)
         
         #FORCEPLOT: CDI-associated severe outcomes
         #shap_values[CLASS][observation]
@@ -171,7 +171,7 @@ def index():
         CLASS4 = 4 #death
         CLASS5 = 6 #recurrence + severe outcome besides death
 
-        shap.force_plot(base_value = explainer.expected_value[CLASS1]+explainer.expected_value[CLASS2]+explainer.expected_value[CLASS3]+explainer.expected_value[CLASS4]+explainer.expected_value[CLASS5],
+        shap.force_plot(base_value = expected_all_severe_outcomes, #explainer.expected_value[CLASS1]+explainer.expected_value[CLASS2]+explainer.expected_value[CLASS3]+explainer.expected_value[CLASS4]+explainer.expected_value[CLASS5],
              shap_values = shap_values[CLASS1][:,:]+shap_values[CLASS2][:,:]+shap_values[CLASS3][:,:]+shap_values[CLASS4][:,:]+shap_values[CLASS5][:,:], features = inputs.iloc[[0]].values, feature_names=feature_names, show=False, matplotlib=True)
         
         bytes_image_death = io.BytesIO()
@@ -189,7 +189,7 @@ def index():
         CLASS1 = 5 #recurrence (uncomplicated)
         CLASS2 = 6 #recurrence (complicated)
         
-        shap.force_plot(base_value = explainer.expected_value[CLASS1]+explainer.expected_value[CLASS2],
+        shap.force_plot(base_value = expected_all_recurrence, #explainer.expected_value[CLASS1]+explainer.expected_value[CLASS2],
              shap_values = shap_values[CLASS1][:,:]+shap_values[CLASS2][:,:], features = inputs.iloc[[0]].values, feature_names=feature_names, show=False, matplotlib=True)
     
         bytes_image_recurrence = io.BytesIO()

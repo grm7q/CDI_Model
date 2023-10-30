@@ -171,7 +171,7 @@ def index():
         CLASS4 = 4 #death
         CLASS5 = 6 #recurrence + severe outcome besides death
 
-        shap.force_plot(base_value = 0.0922 #explainer.expected_value[CLASS1]+explainer.expected_value[CLASS2]+explainer.expected_value[CLASS3]+explainer.expected_value[CLASS4]+explainer.expected_value[CLASS5],
+        shap.force_plot(base_value = explainer.expected_value[CLASS1]+explainer.expected_value[CLASS2]+explainer.expected_value[CLASS3]+explainer.expected_value[CLASS4]+explainer.expected_value[CLASS5],
              shap_values = shap_values[CLASS1][:,:]+shap_values[CLASS2][:,:]+shap_values[CLASS3][:,:]+shap_values[CLASS4][:,:]+shap_values[CLASS5][:,:], features = inputs.iloc[[0]].values, feature_names=feature_names, show=False, matplotlib=True)
         
         bytes_image_death = io.BytesIO()
@@ -189,7 +189,7 @@ def index():
         CLASS1 = 5 #recurrence (uncomplicated)
         CLASS2 = 6 #recurrence (complicated)
         
-        shap.force_plot(base_value = .2211 #explainer.expected_value[CLASS1]+explainer.expected_value[CLASS2],
+        shap.force_plot(base_value = explainer.expected_value[CLASS1]+explainer.expected_value[CLASS2],
              shap_values = shap_values[CLASS1][:,:]+shap_values[CLASS2][:,:], features = inputs.iloc[[0]].values, feature_names=feature_names, show=False, matplotlib=True)
     
         bytes_image_recurrence = io.BytesIO()

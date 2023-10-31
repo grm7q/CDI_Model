@@ -54,13 +54,13 @@
     <p><strong>Force Plot: 60-day Recurrent CDI Prediction</strong></p>   
     <img style="max-width: 95%; height: auto;" src='data:image/png;base64,{{ bytes_image_recurrence }}'/>
     
-    <p><strong>Force Plot: CDI-associated Severe Outcomes (ICU, Shock, Surgery, or Death)</strong></p>   
+    <p><strong>Force Plot: CDI-attributable Severe Outcomes (ICU, Shock, Surgery, or Death)</strong></p>   
     <img style="max-width: 95%; height: auto;" src='data:image/png;base64,{{ bytes_image_death }}'/>
     
 <p></p> 
 <p></p> 
 
-    <p><em>(SHapley Additive exPlanations (SHAP) values help explain how important each of this patient's inputs were in calculating (through the deep neural network) the predicted probabilities.)
+    <p><em>(SHapley Additive exPlanations (SHAP) values help explain how important each of this patient's inputs were in calculating predicted probabilities using the neural network model.)
     
     Note. For boolean variables, zeroes indicate 'no' (vs. 1='yes'). Force plot 'base values' represent average model outputs over the training set and thus may differ slightly from expected probabilities from the entire (1,660 case) dataset, as shown in the table.</em></p>
 <p></p>     

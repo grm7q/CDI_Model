@@ -54,7 +54,7 @@ def all_prediction_results(predictions):
     [data.append({'CDI-Attributable Outcome': class_names[i], 'Predicted Probability (%)':round(predictions[0][i]*100,3), 'Expected (based on historical UVA cases)':round(expected_probabilities[i],3)}) for i in range(7)]
     #adding a blank row..
     data.append({'CDI-Attributable Outcome': '', 'Predicted Probability (%)':0})   
-    data.append({'CDI-Attributable Outcome': 'Any Recurrent Infection', 'Predicted Probability (%)':(data[5]['Predicted Probability (%)']+data[6]['Predicted Probability (%)']), 'Expected (based on historical UVA cases)':expected_all_recurrence})
+    data.append({'CDI-Attributable Outcome': 'Recurrent Infection (with or without severe outcomes)', 'Predicted Probability (%)':(data[5]['Predicted Probability (%)']+data[6]['Predicted Probability (%)']), 'Expected (based on historical UVA cases)':expected_all_recurrence})
     data.append({'CDI-Attributable Outcome': 'Any CDI-Attributable Severe Outcome (ICU, Shock, Surgery, Death)', 'Predicted Probability (%)':(data[1]['Predicted Probability (%)']+data[2]['Predicted Probability (%)']+data[3]['Predicted Probability (%)']+data[4]['Predicted Probability (%)']+data[6]['Predicted Probability (%)']), 'Expected (based on historical UVA cases)':expected_all_severe_outcomes})
     data = pd.DataFrame(data).reset_index(drop=True)
     data['Predicted/Expected'] = data['Predicted Probability (%)'] /data['Expected (based on historical UVA cases)'] 

@@ -202,7 +202,7 @@ def index():
         #print('<img src="data:image/png;base64,{}">'.format(bytes_image_recurrence))
 
         
-        return render_template('index12.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
+        return render_template('index13.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
                               #force_plot_recurrence = os.path.join( '/static/force_plot_recurrence.jpg'),
                                bytes_image_recurrence = bytes_image_recurrence,
                                bytes_image_death = bytes_image_death)
@@ -220,7 +220,7 @@ def index():
         keras.backend.clear_session()
         gc.collect()
         
-    return render_template('index12.html')
+    return render_template('index13.html')
 
 
 if __name__ == '__main__':

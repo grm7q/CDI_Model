@@ -7,4 +7,4 @@ tensorflow-cpu==2.9.0
 keras
 shap
 matplotlib
-cloudpickle
+cloudpickle==2.2.1

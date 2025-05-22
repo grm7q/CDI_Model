@@ -15,8 +15,6 @@ import os
 import io
 import base64 
 
-keras.backend.clear_session()
-gc.collect()
 RANDOM_SEED = 3
 np.random.seed(RANDOM_SEED)
 tf.random.set_seed(RANDOM_SEED)
@@ -27,12 +25,6 @@ pd.set_option('display.max_colwidth', None) # Display the DataFrame with the lon
 #To restrict TensorFlow to use only one CPU, we need to set the environment variable 
 #CUDA_VISIBLE_DEVICES to an empty value. Here’s how you do it:
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-
-model = load_model('model_predict_DOOR_unscaled3_FINAL_reduced.h5', compile=False)
-#model.compile()
-
-with open("explainer_saved2", "rb") as f:
-    explainer = cp.load(f)
     
 #specifying class names for Y_combined
 class_names = ["Survival; adequate clinical response; no severe adverse events, and no recurrent CDI", 
@@ -81,6 +73,11 @@ app = Flask(__name__)
 
 def index():
     if request.method == 'POST':
+        # Lazy load model and explainer
+        model = load_model('model_predict_DOOR_unscaled3_FINAL_reduced.h5', compile=False)
+        with open("explainer_saved2", "rb") as f:
+            explainer = cp.load(f)
+            
         #my_path = os.getcwd() # Figures out the absolute path 
 #gathering continuous inputs...
         age = request.form['age']
@@ -220,9 +217,8 @@ def index():
         del CLASS
         del bytes_image_recurrence
         del bytes_image_death
-        keras.backend.clear_session()
-        gc.collect()
-        
+    keras.backend.clear_session()
+    gc.collect()    
     return render_template('index13.html')
 
 

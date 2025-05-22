@@ -1,5 +1,5 @@
 Flask
-pandas
+pandas==2.0.3
 numpy==1.23.5
 gunicorn==0.17.2
 Jinja2

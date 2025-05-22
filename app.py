@@ -7,6 +7,9 @@ from flask import Flask, request, render_template #for modifying html template w
 import shap
 import gc
 import joblib as jbl #saving/loading shap explainer
+#set the backend in headless environment to avoid GUI-related crashes
+import matplotlib
+matplotlib.use('Agg')  # Use a non-GUI backend before importing pyplot
 import matplotlib.pyplot as plt
 import os
 import io

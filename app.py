@@ -6,7 +6,7 @@ import pandas as pd
 from flask import Flask, request, render_template #for modifying html template with python output
 import shap
 import gc
-import joblib as jbl #saving/loading shap explainer
+import cloudpickle as cp
 #set the backend in headless environment to avoid GUI-related crashes
 import matplotlib
 matplotlib.use('Agg')  # Use a non-GUI backend before importing pyplot
@@ -31,8 +31,8 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 model = load_model('model_predict_DOOR_unscaled3_FINAL_reduced.h5', compile=False)
 #model.compile()
 
-with open('explainer_saved', 'rb') as f:
-    explainer = jbl.load(f)
+with open("explainer_saved", "rb") as f:
+    explainer = cp.load(f)
     
 #specifying class names for Y_combined
 class_names = ["Survival; adequate clinical response; no severe adverse events, and no recurrent CDI", 

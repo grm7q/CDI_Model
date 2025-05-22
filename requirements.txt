@@ -6,5 +6,5 @@ Jinja2
 tensorflow-cpu==2.9.0
 keras
 shap
-joblib
 matplotlib
+cloudpickle

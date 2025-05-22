@@ -170,7 +170,9 @@ def index():
         CLASS3 = 3 #surgery
         CLASS4 = 4 #death
         CLASS5 = 6 #recurrence + severe outcome besides death
-
+        
+        plt.figure()
+        plt.clf()
         shap.force_plot(base_value = explainer.expected_value[CLASS1]+explainer.expected_value[CLASS2]+explainer.expected_value[CLASS3]+explainer.expected_value[CLASS4]+explainer.expected_value[CLASS5],
              shap_values = shap_values[CLASS1][:,:]+shap_values[CLASS2][:,:]+shap_values[CLASS3][:,:]+shap_values[CLASS4][:,:]+shap_values[CLASS5][:,:], features = inputs.iloc[[0]].values, feature_names=feature_names, show=False, matplotlib=True)
         
@@ -188,7 +190,9 @@ def index():
         #FORCEPLOT: 60-day Uncomplicated Recurrence
         CLASS1 = 5 #recurrence (uncomplicated)
         CLASS2 = 6 #recurrence (complicated)
-        
+
+        plt.figure()
+        plt.clf()
         shap.force_plot(base_value = explainer.expected_value[5]+explainer.expected_value[6],
              shap_values = shap_values[CLASS1][:,:]+shap_values[CLASS2][:,:], features = inputs.iloc[[0]].values, feature_names=feature_names, show=False, matplotlib=True)
     
@@ -198,8 +202,12 @@ def index():
         bytes_image_recurrence = bytes_image_recurrence.getvalue()         # get data from file (BytesIO)
         bytes_image_recurrence = base64.b64encode(bytes_image_recurrence) # convert to base64 as bytes
         bytes_image_recurrence = bytes_image_recurrence.decode()          # convert bytes to string
+        plt.close()
 
-        #print('<img src="data:image/png;base64,{}">'.format(bytes_image_recurrence))
+        # Clean up memory
+        del model, explainer, inputs, pred, shap_values
+        keras.backend.clear_session()
+        gc.collect()
 
         
         return render_template('index13.html', pred=all_prediction_results(pred).to_html(index=False, index_names=False,  classes='table table-striped table-hover', header = "true", justify = "left"),
@@ -209,16 +217,7 @@ def index():
                               #force_plot_death = os.path.join( '/static/force_plot_death.jpg'))
                               #force_plot_death = f"{Image.open('force_plot_death.png').show().html()}")
     
-        #added to help prevent memory leaks    
-        del inputs
-        del pred
-        del feature_names
-        del shap_values
-        del CLASS
-        del bytes_image_recurrence
-        del bytes_image_death
-    keras.backend.clear_session()
-    gc.collect()    
+  
     return render_template('index13.html')
 
 

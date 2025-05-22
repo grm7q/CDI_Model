@@ -1,6 +1,6 @@
 Flask
 pandas
-numpy
+numpy==1.23.5
 gunicorn==0.17.2
 Jinja2
 tensorflow-cpu==2.9.0
